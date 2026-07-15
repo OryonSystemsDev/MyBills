@@ -1,0 +1,1572 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyBills — Controle financeiro sério, sem travar recurso atrás de plano</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:ital,opsz,wght@0,12..96,200..800;1,12..96,200..800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --bg-alt: #161616;
+      --surface: #242424;
+      --border: #2a2a2a;
+      --ink: #F1F5F9;
+      --ink-dim: #94A3B8;
+      --ink-dimmer: #64748B;
+      --accent: #8B5CF6;
+      --accent-dark: #6C2BD9;
+      --accent-light: #A78BFA;
+      --teal: #00BFA5;
+      --ok: #22C55E;
+      --warn: #F5A623;
+      --danger: #EF4444;
+      --font-display: 'Bricolage Grotesque', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Bricolage Grotesque', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent-light);
+    }
+
+    ::selection {
+      background: rgba(139, 92, 246, 0.4);
+      color: #fff;
+    }
+
+    ::-webkit-scrollbar {
+      width: 11px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-alt);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 6px;
+      border: 3px solid var(--bg-alt);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4a3d33;
+    }
+
+    @keyframes floaty {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    /* film-grain atmosphere layer */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.035;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* feature / sec cards hover */
+    .feature-card,
+    .sec-card {
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .feature-card:hover,
+    .sec-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    /* ---------- BlurText ---------- */
+    .blur-word {
+      display: inline-block;
+      filter: blur(10px);
+      opacity: 0;
+      transform: translateY(-50px);
+      transition: filter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform, filter, opacity;
+    }
+
+    .blur-word.in-view {
+      filter: blur(0px);
+      opacity: 1;
+      transform: translateY(0px);
+    }
+
+    /* ---------- ScrollFloat ---------- */
+    .sf {
+      display: inline-block;
+    }
+
+    .sf-char-wrap {
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .sf-char {
+      display: inline-block;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+
+    .sf.in-view .sf-char {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+
+    /* ---------- FadeContent ---------- */
+    .fade-content {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .fade-content.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- SpotlightCard ---------- */
+    .spotlight-card {
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .spotlight-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      background: radial-gradient(circle 220px at var(--sx, 50%) var(--sy, 50%), rgba(139, 92, 246, 0.28), transparent 70%);
+    }
+
+    .spotlight-card:hover .spotlight-overlay {
+      opacity: 1;
+    }
+
+    /* ---------- StarBorder ---------- */
+    .star-border-container {
+      position: relative;
+      display: inline-block;
+      border-radius: 13px;
+      padding: 1.5px;
+      overflow: hidden;
+    }
+
+    .star-border-container.star-border-card {
+      display: block;
+      border-radius: 20px;
+    }
+
+    .star-border-container .border-gradient-bottom {
+      position: absolute;
+      width: 300%;
+      height: 50%;
+      opacity: 0.75;
+      bottom: -11px;
+      right: -250%;
+      border-radius: 50%;
+      animation: star-movement-bottom linear infinite alternate;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .star-border-container .border-gradient-top {
+      position: absolute;
+      width: 300%;
+      height: 50%;
+      opacity: 0.75;
+      top: -11px;
+      left: -250%;
+      border-radius: 50%;
+      animation: star-movement-top linear infinite alternate;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .star-border-container .star-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes star-movement-bottom {
+      0% {
+        transform: translate(0%, 0%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(-100%, 0%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes star-movement-top {
+      0% {
+        transform: translate(0%, 0%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(100%, 0%);
+        opacity: 0;
+      }
+    }
+
+    /* ---------- Particles (hero bg) ---------- */
+    #particles-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1.6s ease 0.2s;
+    }
+
+    #particles-canvas canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    body.is-loaded #particles-canvas {
+      opacity: 1;
+    }
+
+    /* ---------- Hero intro word: grows in from small (scale+fade),
+       solid accent purple, then drains to the outline resting
+       state, ahead of the rest of the hero cascade ---------- */
+    #heroIntroWord {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.35);
+      color: var(--accent);
+      -webkit-text-stroke: 0px transparent;
+      transition:
+        opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0s,
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0s,
+        color 0.7s ease 0.9s,
+        -webkit-text-stroke-width 0.7s ease 0.9s,
+        -webkit-text-stroke-color 0.7s ease 0.9s;
+    }
+    #heroIntroWord.is-active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(139, 92, 246, 0.16);
+    }
+
+    /* ---------- Load-in choreography ---------- */
+    .hero-reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      filter: blur(6px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.is-loaded .hero-reveal {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+
+    /* ---------- Nav active link ---------- */
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link.active {
+      color: var(--ink);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -6px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ---------- Mockup scroll reveal (dashboard + card + bars) ---------- */
+    .reveal-mockup {
+      opacity: 0;
+      transform: translateY(46px) scale(0.95);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+
+    .reveal-mockup.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .grow-bar {
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-mockup.is-visible .grow-bar {
+      transform: scaleY(1);
+    }
+
+    .reveal-fill {
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+    }
+
+    .reveal-mockup.is-visible .reveal-fill {
+      transform: scaleX(1);
+    }
+
+    /* ---------- Parallax blobs ---------- */
+    .parallax-blob {
+      will-change: transform;
+    }
+
+    /* ---------- Editorial index numerals (feature / security cards) ---------- */
+    .card-index {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    /* ---------- App tour (real screenshots) ---------- */
+    .tour-tab {
+      position: relative;
+      padding: 10px 16px 13px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--ink-dim);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .tour-tab.is-active {
+      color: var(--ink);
+      border-color: var(--accent);
+    }
+
+    .tour-tab-bar {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 6px;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .tour-tab-bar span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+    }
+
+    .tour-img {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .tour-img.is-active {
+      opacity: 1;
+    }
+
+    /* ---------- Mobile nav ---------- */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    nav.nav-open .nav-toggle span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    nav.nav-open .nav-toggle span:nth-child(2) {
+      opacity: 0;
+    }
+
+    nav.nav-open .nav-toggle span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* ---------- Responsive breakpoint ----------
+     Inline styles beat stylesheet rules on specificity alone, so every
+     override below needs !important to actually win against the
+     inline layout declarations used throughout the page. */
+    @media (max-width: 768px) {
+      nav {
+        padding: 14px 20px !important;
+      }
+
+      .nav-toggle {
+        display: flex !important;
+      }
+
+      .nav-links {
+        display: none !important;
+        position: fixed;
+        top: 61px;
+        left: 0;
+        right: 0;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0 !important;
+        background: var(--bg-alt);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 20px 18px !important;
+        max-height: calc(100vh - 61px);
+        overflow-y: auto;
+      }
+
+      nav.nav-open .nav-links {
+        display: flex !important;
+      }
+
+      .nav-links .nav-link {
+        padding: 13px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 16px;
+      }
+
+      .nav-links a:last-child {
+        margin-top: 14px;
+        justify-content: center;
+      }
+
+      #topo {
+        padding: 120px 20px 60px !important;
+      }
+
+      #app {
+        padding: 16px 20px 60px !important;
+      }
+
+      #wrapped {
+        padding: 60px 20px !important;
+      }
+
+      #recursos {
+        padding: 60px 20px !important;
+      }
+
+      #tour {
+        padding: 60px 20px !important;
+      }
+
+      #cartao {
+        padding: 60px 20px !important;
+      }
+
+      #relatorios {
+        padding: 60px 20px !important;
+      }
+
+      #seguranca {
+        padding: 60px 20px !important;
+      }
+
+      #faq {
+        padding: 60px 20px !important;
+      }
+
+      #cta {
+        padding: 70px 20px 80px !important;
+      }
+
+      #precos {
+        padding: 16px 20px 60px !important;
+      }
+
+      #focoHeading {
+        padding: 0 20px !important;
+      }
+
+      .grid-dashboard {
+        grid-template-columns: 1fr !important;
+      }
+
+      .grid-2col {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+
+      .grid-4to2 {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      .grid-3to1 {
+        grid-template-columns: 1fr !important;
+      }
+
+      .grid-legend {
+        flex-wrap: wrap !important;
+      }
+
+      #pizzaChart {
+        width: 240px !important;
+        height: 240px !important;
+      }
+
+      .plan-panels-wrap {
+        height: 320px !important;
+      }
+
+      .plan-desc {
+        display: none !important;
+      }
+
+      .hero-chip {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="siteNav" class="hero-reveal"
+    style="position: fixed; top: 0; left: 0; right: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(20,17,15,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid var(--border);">
+    <div id="navProgress"
+      style="position: absolute; left: 0; bottom: -1px; height: 2px; width: 0%; background: var(--accent); transition: width 0.1s linear;">
+    </div>
+    <a href="#topo" style="display: flex; align-items: center; gap: 11px; color: var(--ink);">
+      <img src="logo.png" alt="MyBills" style="width: 34px; height: 34px; display: block;">
+      <span
+        style="font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.01em;">MyBills</span>
+    </a>
+    <button id="navToggle" class="nav-toggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" style="display: flex; align-items: center; gap: 30px;">
+      <a href="#recursos" class="nav-link"
+        style="color: var(--ink-dim); font-size: 14px; font-weight: 500;">Recursos</a>
+      <a href="#relatorios" class="nav-link"
+        style="color: var(--ink-dim); font-size: 14px; font-weight: 500;">Relatórios</a>
+      <a href="#seguranca" class="nav-link"
+        style="color: var(--ink-dim); font-size: 14px; font-weight: 500;">Segurança</a>
+      <a href="#planos" class="nav-link" style="color: var(--ink-dim); font-size: 14px; font-weight: 500;">Planos</a>
+      <a href="#planos"
+        style="display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; background: var(--accent); color: #fff; border-radius: 10px; font-size: 14px; font-weight: 700; box-shadow: 0 6px 20px rgba(139,92,246,0.35);">Começar
+        agora</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section id="topo"
+    style="position: relative; padding: 190px 40px 110px; overflow: hidden; background: radial-gradient(ellipse 140% 90% at 50% -15%, rgba(108,43,217,0.4), transparent 58%);">
+    <div class="parallax-blob" data-parallax="0.08" data-base-transform="translateX(-50%)"
+      style="position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 900px; height: 700px; background: radial-gradient(ellipse at center, rgba(108,43,217,0.28), transparent 62%); filter: blur(30px); pointer-events: none;">
+    </div>
+    <div class="parallax-blob" data-parallax="0.12"
+      style="position: absolute; top: 120px; right: -80px; width: 480px; height: 480px; background: radial-gradient(circle, rgba(0,191,165,0.14), transparent 65%); filter: blur(20px); pointer-events: none;">
+    </div>
+    <div id="particles-canvas" style="pointer-events: auto;"></div>
+    <div id="heroIntroWord" aria-hidden="true"
+      style="position: absolute; top: 48%; left: 50%; font-family: var(--font-display); font-weight: 800; font-size: clamp(110px, 20vw, 320px); letter-spacing: -0.04em; line-height: 1; white-space: nowrap; pointer-events: none; z-index: 0; user-select: none; transform-origin: center;">
+      MYBILLS</div>
+    <div class="hero-chip hero-reveal"
+      style="position: absolute; top: 265px; left: 4%; z-index: 2; transition-delay: 0.65s;">
+      <div
+        style="animation: floaty 5s ease-in-out infinite; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+        <span
+          style="width: 30px; height: 30px; border-radius: 9px; background: rgba(34,197,94,0.15); display: flex; align-items: center; justify-content: center; color: var(--ok); font-size: 15px; flex: none;">↑</span>
+        <div style="text-align: left;">
+          <div
+            style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--ink); white-space: nowrap;">
+            +R$ 500,00</div>
+          <div style="font-size: 11px; color: var(--ink-dimmer); white-space: nowrap;">Recebido agora</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-chip hero-reveal"
+      style="position: absolute; top: 470px; right: 5%; z-index: 2; transition-delay: 0.8s;">
+      <div
+        style="animation: floaty 4.5s ease-in-out infinite 0.3s; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+        <span
+          style="width: 30px; height: 30px; border-radius: 9px; background: rgba(139,92,246,0.16); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 15px; flex: none;">🛒</span>
+        <div style="text-align: left;">
+          <div style="font-size: 13px; font-weight: 600; color: var(--ink); white-space: nowrap;">Mercado</div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-dimmer); white-space: nowrap;">
+            categorizado</div>
+        </div>
+      </div>
+    </div>
+    <div style="position: relative; max-width: 1000px; margin: 0 auto; text-align: center; z-index: 1;">
+      <div class="hero-reveal"
+        style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; margin-bottom: 30px; transition-delay: 0.08s;">
+        <span
+          style="width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok);"></span>
+        <span style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); font-weight: 500;">Sem
+          freemium furado · Todo recurso, em todo plano</span>
+      </div>
+      <h1 class="hero-reveal"
+        style="font-family: var(--font-display); font-weight: 600; font-size: clamp(40px, 6vw, 76px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 26px; text-wrap: balance; transition-delay: 0.2s;">
+        Controle financeiro sério.<br><span style="font-style: italic; color: var(--accent);">Sem travar recurso atrás
+          de plano.</span>
+      </h1>
+      <p class="hero-reveal"
+        style="font-size: clamp(17px, 2vw, 21px); line-height: 1.55; color: var(--ink-dim); max-width: 640px; margin: 0 auto 40px; text-wrap: pretty; transition-delay: 0.32s;">
+        Cartão inteligente, importação de extratos, cofrinhos, multimoeda e um Wrapped anual. Tudo desbloqueado desde o
+        primeiro dia. Você paga pra apoiar, não pra destravar.
+      </p>
+      <div class="hero-reveal"
+        style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; transition-delay: 0.44s;">
+        <span class="star-border-container magnetic">
+          <span class="border-gradient-bottom"
+            style="background: radial-gradient(circle, var(--accent), transparent 10%); animation-duration: 5s;"></span>
+          <span class="border-gradient-top"
+            style="background: radial-gradient(circle, var(--teal), transparent 10%); animation-duration: 5s;"></span>
+          <a href="#planos" class="star-inner"
+            style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 30px; background: linear-gradient(135deg, var(--accent-dark), var(--accent)); color: #fff; border-radius: 13px; font-size: 16px; font-weight: 600; box-shadow: 0 12px 34px rgba(108,43,217,0.42);">Ver
+            planos →</a>
+        </span>
+        <a href="#app"
+          style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 30px; background: var(--surface); border: 1px solid var(--border); color: var(--ink); border-radius: 13px; font-size: 16px; font-weight: 600;">Ver
+          o app</a>
+      </div>
+      <p class="hero-reveal"
+        style="margin: 34px 0 0; font-size: 13px; color: var(--ink-dimmer); font-style: italic; transition-delay: 0.56s;">
+        Feito pra mim. Bom o bastante pra qualquer um.</p>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARD MOCKUP ============ -->
+  <section id="app" style="position: relative; padding: 40px 40px 120px;">
+    <div style="max-width: 1080px; margin: 0 auto;">
+      <div class="reveal-mockup"
+        style="position: relative; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 24px; padding: 26px; box-shadow: 0 40px 100px rgba(0,0,0,0.5);">
+        <div
+          style="position: absolute; inset: 0; border-radius: 24px; background: radial-gradient(ellipse at 20% 0%, rgba(108,43,217,0.12), transparent 55%); pointer-events: none;">
+        </div>
+        <!-- top bar -->
+        <div
+          style="position: relative; display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;">
+          <div>
+            <div style="font-size: 13px; color: var(--ink-dimmer); font-weight: 500;">Bom dia, Rafael</div>
+            <div style="font-family: var(--font-body); font-size: 19px; font-weight: 700;">Visão geral · Julho</div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <span
+              style="width: 36px; height: 36px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border);"></span>
+            <span
+              style="width: 36px; height: 36px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border);"></span>
+          </div>
+        </div>
+        <!-- cards grid -->
+        <div class="grid-dashboard"
+          style="position: relative; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px;">
+          <div
+            style="grid-row: span 1; background: linear-gradient(140deg, #2a1a4d, #1d1230); border: 1px solid #3a2a5d; border-radius: 18px; padding: 22px;">
+            <div style="font-size: 13px; color: #b8a4e8; font-weight: 500; margin-bottom: 8px;">Saldo total</div>
+            <div style="font-family: var(--font-mono); font-size: 36px; font-weight: 700; letter-spacing: -0.01em;">
+              <span data-count="12480" data-prefix="R$ ">R$ 12.480</span><span
+                style="font-size: 21px; color: var(--ink-dim);"><span class="sf">,35</span></span>
+            </div>
+            <div
+              style="display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 4px 10px; background: rgba(34,197,94,0.14); border-radius: 8px;">
+              <span style="color: var(--ok); font-size: 12px; font-weight: 600;">↑ 8,2%</span>
+              <span style="color: var(--ink-dim); font-size: 12px;">vs. mês passado</span>
+            </div>
+          </div>
+          <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 20px;">
+            <div style="font-size: 12px; color: var(--ink-dimmer); font-weight: 500; margin-bottom: 10px;">Receitas
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 23px; font-weight: 600; color: var(--ok);"><span
+                data-count="8200" data-prefix="R$ ">R$ 8.200</span></div>
+            <div style="height: 34px; margin-top: 12px; display: flex; align-items: flex-end; gap: 4px;">
+              <span class="grow-bar"
+                style="flex: 1; height: 40%; background: rgba(34,197,94,0.3); border-radius: 3px; transition-delay: 0s;"></span>
+              <span class="grow-bar"
+                style="flex: 1; height: 65%; background: rgba(34,197,94,0.45); border-radius: 3px; transition-delay: 0.06s;"></span>
+              <span class="grow-bar"
+                style="flex: 1; height: 50%; background: rgba(34,197,94,0.35); border-radius: 3px; transition-delay: 0.12s;"></span>
+              <span class="grow-bar"
+                style="flex: 1; height: 100%; background: var(--ok); border-radius: 3px; transition-delay: 0.18s;"></span>
+            </div>
+          </div>
+          <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 20px;">
+            <div style="font-size: 12px; color: var(--ink-dimmer); font-weight: 500; margin-bottom: 10px;">Despesas
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 23px; font-weight: 600; color: var(--danger);"><span
+                data-count="5317" data-prefix="R$ ">R$ 5.317</span></div>
+            <div style="height: 34px; margin-top: 12px; display: flex; align-items: flex-end; gap: 4px;">
+              <span class="grow-bar"
+                style="flex: 1; height: 70%; background: rgba(239,68,68,0.4); border-radius: 3px; transition-delay: 0s;"></span>
+              <span class="grow-bar"
+                style="flex: 1; height: 90%; background: rgba(239,68,68,0.5); border-radius: 3px; transition-delay: 0.06s;"></span>
+              <span class="grow-bar"
+                style="flex: 1; height: 55%; background: rgba(239,68,68,0.35); border-radius: 3px; transition-delay: 0.12s;"></span>
+              <span class="grow-bar"
+                style="flex: 1; height: 75%; background: rgba(239,68,68,0.45); border-radius: 3px; transition-delay: 0.18s;"></span>
+            </div>
+          </div>
+          <div
+            style="grid-column: 1 / -1; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div
+                style="width: 62px; height: 42px; border-radius: 8px; background: linear-gradient(135deg, var(--accent-dark), var(--accent)); position: relative;">
+                <span
+                  style="position: absolute; top: 8px; left: 8px; width: 12px; height: 9px; border-radius: 2px; background: rgba(255,255,255,0.6);"></span>
+              </div>
+              <div>
+                <div style="font-size: 13px; color: var(--ink-dim);">Fatura MyBills Card</div>
+                <div style="font-family: var(--font-mono); font-size: 19px; font-weight: 600;"><span data-count="2140"
+                    data-prefix="R$ " data-decimals="2">R$ 2.140,00</span></div>
+              </div>
+            </div>
+            <div style="flex: 1; max-width: 340px;">
+              <div
+                style="display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-dimmer); margin-bottom: 7px;">
+                <span>Limite usado</span><span style="font-family: var(--font-mono);" data-count="68"
+                  data-suffix="%">68%</span>
+              </div>
+              <div style="height: 8px; border-radius: 5px; background: var(--bg); overflow: hidden;">
+                <div class="reveal-fill"
+                  style="width: 68%; height: 100%; background: linear-gradient(90deg, var(--ok), var(--warn)); border-radius: 5px;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MYBILLS WRAPPED ============ -->
+  <section id="wrapped"
+    style="position: relative; padding: 110px 40px; background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden;">
+    <div class="parallax-blob" data-parallax="0.1"
+      style="position: absolute; top: -100px; left: -60px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(108,43,217,0.2), transparent 65%); filter: blur(20px); pointer-events: none;">
+    </div>
+    <div class="parallax-blob" data-parallax="0.1"
+      style="position: absolute; bottom: -120px; right: -60px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,191,165,0.15), transparent 65%); filter: blur(20px); pointer-events: none;">
+    </div>
+    <div style="position: relative; max-width: 1080px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+        <span
+          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);">MyBills
+          Wrapped</span>
+        <span style="height: 1px; flex: 1; background: var(--border);"></span>
+        <span style="font-family: var(--font-mono); font-size: 13px; color: var(--ink-dimmer);">2025</span>
+      </div>
+      <h2 class="blur-h2"
+        style="font-family: var(--font-display); font-size: clamp(30px, 4vw, 46px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 8px;">
+        Seu ano em números.</h2>
+      <p style="color: var(--ink-dim); font-size: 17px; margin: 0 0 48px; max-width: 520px;">Todo dezembro o MyBills
+        fecha a conta pra você. Sem julgamento, só os fatos — com o peso que eles merecem.</p>
+      <div class="grid-4to2"
+        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;">
+        <div class="fade-content" data-stagger="0" style="background: var(--bg); padding: 34px 28px;">
+          <div
+            style="font-family: var(--font-mono); font-size: clamp(34px, 4.4vw, 54px); font-weight: 700; letter-spacing: -0.01em; line-height: 1;">
+            <span data-count="1284">1.284</span>
+          </div>
+          <div style="color: var(--ink-dim); font-size: 14px; margin-top: 12px;">transações registradas</div>
+        </div>
+        <div class="fade-content" data-stagger="1" style="background: var(--bg); padding: 34px 28px;">
+          <div
+            style="font-family: var(--font-mono); font-size: clamp(34px, 4.4vw, 54px); font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--ok);">
+            <span data-count="71.9" data-prefix="R$ " data-decimals="1">R$ 71,9</span><span
+              style="font-size: 0.5em; color: var(--ink-dim);">k</span>
+          </div>
+          <div style="color: var(--ink-dim); font-size: 14px; margin-top: 12px;">guardados no ano</div>
+        </div>
+        <div class="fade-content" data-stagger="2" style="background: var(--bg); padding: 34px 28px;">
+          <div
+            style="font-family: var(--font-mono); font-size: clamp(34px, 4.4vw, 54px); font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--accent);">
+            <span data-count="92">92</span>
+          </div>
+          <div style="color: var(--ink-dim); font-size: 14px; margin-top: 12px;">dias no verde seguidos</div>
+        </div>
+        <div class="fade-content" data-stagger="3" style="background: var(--bg); padding: 34px 28px;">
+          <div
+            style="font-family: var(--font-mono); font-size: clamp(34px, 4.4vw, 54px); font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--teal);">
+            <span data-count="38" data-prefix="+" data-suffix="%">+38%</span>
+          </div>
+          <div style="color: var(--ink-dim); font-size: 14px; margin-top: 12px;">em investimentos</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCROLL-SCALE PINNED ============ -->
+  <section id="foco" style="position: relative; height: 230vh; background: var(--bg);">
+    <div
+      style="position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+      <div class="parallax-blob" data-parallax="0.06"
+        style="position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(108,43,217,0.14), transparent 62%); filter: blur(30px); pointer-events: none;">
+      </div>
+      <div id="focoHeading"
+        style="position: relative; text-align: center; transform: scale(0.35); opacity: 0.15; transform-origin: center; will-change: transform, opacity; padding: 0 40px;">
+        <div
+          style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dimmer); margin-bottom: 20px;">
+          A ideia é simples</div>
+        <h2
+          style="font-family: var(--font-display); font-size: clamp(38px, 6.5vw, 88px); font-weight: 600; line-height: 1.05; letter-spacing: -0.015em; margin: 0; max-width: 14ch;">
+          Seu dinheiro merece <span style="font-style: italic; color: var(--accent);">um app inteiro</span>, não meio
+          app.</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DIFERENCIAIS ============ -->
+  <section id="recursos"
+    style="position: relative; padding: 120px 40px; background: var(--bg-alt); border-top: 1px solid var(--border);">
+    <div style="max-width: 1160px; margin: 0 auto;">
+      <div style="max-width: 620px; margin-bottom: 56px;">
+        <div
+          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
+          O que você leva</div>
+        <h2 class="blur-h2"
+          style="font-family: var(--font-display); font-size: clamp(30px, 4vw, 46px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 14px;">
+          Seis motivos. Zero asteriscos.</h2>
+        <p style="color: var(--ink-dim); font-size: 17px; margin: 0; line-height: 1.55;">Cada recurso abaixo está
+          disponível em todos os planos. O plano só muda por quanto tempo você apoia o projeto.</p>
+      </div>
+      <div class="grid-3to1" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+
+        <div class="feature-card spotlight-card fade-content tilt" data-stagger="0"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 30px;">
+          <div class="card-index" style="font-size: 34px; margin-bottom: 16px;">01</div>
+          <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 0 0 8px;">Cartão
+            inteligente</h3>
+          <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.55; margin: 0;">Fatura em tempo real, alerta
+            de limite e categorização automática de cada compra.</p>
+        </div>
+
+        <div class="feature-card spotlight-card fade-content tilt" data-stagger="1"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 30px;">
+          <div class="card-index" style="font-size: 34px; margin-bottom: 16px;">02</div>
+          <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 0 0 8px;">Importação
+            OFX</h3>
+          <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.55; margin: 0;">Sobe o extrato do banco e o
+            MyBills concilia tudo. Nada de digitar lançamento por lançamento.</p>
+        </div>
+
+        <div class="feature-card spotlight-card fade-content tilt" data-stagger="2"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 30px;">
+          <div class="card-index" style="font-size: 34px; margin-bottom: 16px;">03</div>
+          <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 0 0 8px;">Cofrinhos
+            &amp; metas</h3>
+          <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.55; margin: 0;">Separe dinheiro por objetivo,
+            veja o progresso e receba um empurrão quando estiver perto.</p>
+        </div>
+
+        <div class="feature-card spotlight-card fade-content tilt" data-stagger="0"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 30px;">
+          <div class="card-index" style="font-size: 34px; margin-bottom: 16px;">04</div>
+          <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 0 0 8px;">Multimoeda
+          </h3>
+          <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.55; margin: 0;">Contas em real, dólar, euro
+            ou cripto no mesmo painel, com conversão do dia.</p>
+        </div>
+
+        <div class="feature-card spotlight-card fade-content tilt" data-stagger="1"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 30px;">
+          <div class="card-index" style="font-size: 34px; margin-bottom: 16px;">05</div>
+          <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 0 0 8px;">Dark nativo
+          </h3>
+          <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.55; margin: 0;">Não é um tema por cima. O
+            MyBills nasceu escuro — confortável de dia, de madrugada, no ônibus.</p>
+        </div>
+
+        <div class="feature-card spotlight-card fade-content tilt" data-stagger="2"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 30px;">
+          <div class="card-index" style="font-size: 34px; margin-bottom: 16px;">06</div>
+          <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 0 0 8px;">MyBills
+            Wrapped</h3>
+          <p style="color: var(--ink-dim); font-size: 15px; line-height: 1.55; margin: 0;">Um resumo anual bonito do seu
+            dinheiro. Pra comemorar o progresso, não pra passar vergonha.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOUR DO APP (screenshots reais) ============ -->
+  <section id="tour" style="position: relative; padding: 120px 40px; background: var(--bg); overflow: hidden;">
+    <div class="parallax-blob" data-parallax="0.08"
+      style="position: absolute; top: -80px; right: -120px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139,92,246,0.16), transparent 65%); filter: blur(30px); pointer-events: none;">
+    </div>
+    <div style="position: relative; max-width: 1080px; margin: 0 auto;">
+      <div style="max-width: 620px; margin-bottom: 40px;">
+        <div
+          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
+          Por dentro do app</div>
+        <h2 class="blur-h2"
+          style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 14px;">
+          O app de verdade, sem photoshop.</h2>
+        <p style="color: var(--ink-dim); font-size: 17px; line-height: 1.6; margin: 0;">Print direto do MyBills rodando.
+          Sem maquete, sem "em breve".</p>
+      </div>
+      <div class="fade-content" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px;" id="tourTabs">
+        <button class="tour-tab is-active" data-tour="0" type="button">Contas<span
+            class="tour-tab-bar"><span></span></span></button>
+        <button class="tour-tab" data-tour="1" type="button">Relatórios<span
+            class="tour-tab-bar"><span></span></span></button>
+        <button class="tour-tab" data-tour="2" type="button">Cartões<span
+            class="tour-tab-bar"><span></span></span></button>
+        <button class="tour-tab" data-tour="3" type="button">Categorias<span
+            class="tour-tab-bar"><span></span></span></button>
+      </div>
+      <div class="reveal-mockup tilt" id="tourFrame" data-tilt-max="3"
+        style="position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 40px 100px rgba(0,0,0,0.5); background: #0d0d0d;">
+        <div
+          style="display: flex; align-items: center; gap: 7px; padding: 12px 16px; border-bottom: 1px solid var(--border);">
+          <span style="width: 11px; height: 11px; border-radius: 50%; background: var(--danger);"></span>
+          <span style="width: 11px; height: 11px; border-radius: 50%; background: var(--warn);"></span>
+          <span style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok);"></span>
+        </div>
+        <div style="position: relative; width: 100%; aspect-ratio: 1.82 / 1;">
+          <img class="tour-img is-active" src="screenshots/contas.png" alt="Tela de contas do MyBills"
+            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;">
+          <img class="tour-img" src="screenshots/relatorios.png" alt="Tela de relatórios do MyBills"
+            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;">
+          <img class="tour-img" src="screenshots/cartoes.png" alt="Tela de cartões de crédito do MyBills"
+            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;">
+          <img class="tour-img" src="screenshots/categorias.png" alt="Tela de categorias do MyBills"
+            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CARTÃO + LIMITE ============ -->
+  <section id="cartao" style="position: relative; padding: 120px 40px; background: var(--bg);">
+    <div class="grid-2col"
+      style="max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+      <div class="fade-content">
+        <div
+          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
+          Cartão de crédito</div>
+        <h2 class="blur-h2"
+          style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 16px;">
+          Você vê o limite virar antes de estourar.</h2>
+        <p style="color: var(--ink-dim); font-size: 17px; line-height: 1.6; margin: 0 0 28px;">A barra de limite muda de
+          cor conforme você gasta. Verde é tranquilo, laranja é atenção, vermelho é hora de segurar. Simples assim.</p>
+        <div class="grid-legend" style="display: flex; gap: 20px;">
+          <div style="display: flex; align-items: center; gap: 9px;"><span
+              style="width: 12px; height: 12px; border-radius: 3px; background: var(--ok);"></span><span
+              style="font-size: 14px; color: var(--ink-dim);">Até 60%</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span
+              style="width: 12px; height: 12px; border-radius: 3px; background: var(--warn);"></span><span
+              style="font-size: 14px; color: var(--ink-dim);">60–85%</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span
+              style="width: 12px; height: 12px; border-radius: 3px; background: var(--danger);"></span><span
+              style="font-size: 14px; color: var(--ink-dim);">85%+</span></div>
+        </div>
+      </div>
+      <div class="reveal-mockup"
+        style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 22px; padding: 30px;">
+        <div
+          style="position: relative; width: 100%; aspect-ratio: 1.6 / 1; border-radius: 18px; background: linear-gradient(135deg, var(--accent-dark), #2a1a4d 70%); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; box-shadow: 0 20px 50px rgba(108,43,217,0.3);">
+          <div
+            style="position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(0,191,165,0.25); filter: blur(20px);">
+          </div>
+          <div style="position: relative; display: flex; justify-content: space-between; align-items: flex-start;">
+            <span
+              style="font-family: var(--font-display); font-weight: 700; font-size: 18px; color: #fff;">MyBills</span>
+            <span
+              style="width: 40px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.4));"></span>
+          </div>
+          <div style="position: relative;">
+            <div
+              style="font-family: var(--font-mono); font-size: 18px; letter-spacing: 0.12em; color: #fff; margin-bottom: 12px;">
+              •••• •••• •••• 4827</div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.7);">
+              <span>RAFAEL MENDES</span><span>07/29</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 26px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;">
+            <span style="font-size: 14px; color: var(--ink-dim);">Limite usado</span>
+            <span style="font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--warn);"><span
+                data-count="3400" data-prefix="R$ ">R$ 3.400</span> <span
+                style="color: var(--ink-dimmer); font-weight: 400;">de R$ 5.000</span></span>
+          </div>
+          <div id="cardLimitTrack"
+            style="height: 12px; border-radius: 7px; background: var(--surface); overflow: hidden; position: relative;">
+            <div id="cardLimitFill" class="reveal-fill"
+              style="width: 68%; height: 100%; background: linear-gradient(90deg, var(--ok) 0%, var(--ok) 45%, var(--warn) 100%); border-radius: 7px;">
+            </div>
+          </div>
+          <div
+            style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--ink-dimmer);">
+            <span>0%</span><span style="font-family: var(--font-mono); color: var(--warn);"><span data-count="68"
+                data-suffix="%">68%</span> · atenção</span><span>100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RELATÓRIOS + PIZZA ============ -->
+  <section id="relatorios"
+    style="position: relative; padding: 120px 40px; background: var(--bg-alt); border-top: 1px solid var(--border);">
+    <div class="grid-2col"
+      style="max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center;">
+      <div style="display: flex; justify-content: center;">
+        <div id="pizzaChart" style="position: relative; width: 300px; height: 300px;">
+          <div
+            style="width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#6C2BD9 0% 32%, #8B5CF6 32% 56%, #00BFA5 56% 72%, #22C55E 72% 84%, #a78bfa 84% 93%, #64748B 93% 100%); -webkit-mask: radial-gradient(circle, transparent 52%, #000 53%); mask: radial-gradient(circle, transparent 52%, #000 53%);">
+          </div>
+          <div
+            style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="font-size: 12px; color: var(--ink-dimmer);">Gasto no mês</div>
+            <div style="font-family: var(--font-mono); font-size: 28px; font-weight: 700; letter-spacing: -0.01em;">R$
+              5.317</div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-content">
+        <div
+          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
+          Relatórios</div>
+        <h2 class="blur-h2"
+          style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 16px;">
+          Pra onde foi o dinheiro? Óbvio, num olhar.</h2>
+        <p style="color: var(--ink-dim); font-size: 16px; line-height: 1.6; margin: 0 0 28px;">Gasto por categoria, mês
+          a mês, sem planilha. Cada fatia é clicável e abre os lançamentos por trás dela.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;">
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--surface);">
+            <span style="display: flex; align-items: center; gap: 9px;"><span
+                style="width: 11px; height: 11px; border-radius: 3px; background: #6C2BD9;"></span><span
+                style="font-size: 14px; color: var(--ink);">Moradia</span></span><span
+              style="font-family: var(--font-mono); font-size: 14px; color: var(--ink-dim);">32%</span>
+          </div>
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--surface);">
+            <span style="display: flex; align-items: center; gap: 9px;"><span
+                style="width: 11px; height: 11px; border-radius: 3px; background: #8B5CF6;"></span><span
+                style="font-size: 14px; color: var(--ink);">Alimentação</span></span><span
+              style="font-family: var(--font-mono); font-size: 14px; color: var(--ink-dim);">24%</span>
+          </div>
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--surface);">
+            <span style="display: flex; align-items: center; gap: 9px;"><span
+                style="width: 11px; height: 11px; border-radius: 3px; background: var(--teal);"></span><span
+                style="font-size: 14px; color: var(--ink);">Transporte</span></span><span
+              style="font-family: var(--font-mono); font-size: 14px; color: var(--ink-dim);">16%</span>
+          </div>
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--surface);">
+            <span style="display: flex; align-items: center; gap: 9px;"><span
+                style="width: 11px; height: 11px; border-radius: 3px; background: #22C55E;"></span><span
+                style="font-size: 14px; color: var(--ink);">Lazer</span></span><span
+              style="font-family: var(--font-mono); font-size: 14px; color: var(--ink-dim);">12%</span>
+          </div>
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--surface);">
+            <span style="display: flex; align-items: center; gap: 9px;"><span
+                style="width: 11px; height: 11px; border-radius: 3px; background: #a78bfa;"></span><span
+                style="font-size: 14px; color: var(--ink);">Assinaturas</span></span><span
+              style="font-family: var(--font-mono); font-size: 14px; color: var(--ink-dim);">9%</span>
+          </div>
+          <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--surface);">
+            <span style="display: flex; align-items: center; gap: 9px;"><span
+                style="width: 11px; height: 11px; border-radius: 3px; background: #64748B;"></span><span
+                style="font-size: 14px; color: var(--ink);">Outros</span></span><span
+              style="font-family: var(--font-mono); font-size: 14px; color: var(--ink-dim);">7%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PLANOS: SCROLL-SWAP ============ -->
+  <section id="planos"
+    style="position: relative; height: 320vh; background: var(--bg); border-top: 1px solid var(--border);">
+    <div style="position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden;">
+      <div id="planGlow" class="parallax-blob" data-parallax="0.05" data-base-transform="translate(-50%,-50%)"
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle, rgba(139,92,246,0.27), transparent 70%); filter: blur(30px); pointer-events: none; transition: background 0.6s ease;">
+      </div>
+      <div class="grid-2col"
+        style="position: relative; max-width: 1080px; margin: 0 auto; width: 100%; padding: 0 40px; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; align-items: center;">
+        <!-- left: label + dots -->
+        <div>
+          <div
+            style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
+            Planos</div>
+          <h2 class="blur-h2"
+            style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 18px;">
+            Role para comparar.</h2>
+          <p class="plan-desc" style="color: var(--ink-dim); font-size: 16px; line-height: 1.6; margin: 0 0 34px;">Mesmo
+            app, mesmos recursos. Quanto mais tempo você apoia de uma vez, menos paga por mês.</p>
+          <div style="display: flex; align-items: center; gap: 20px;">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div style="display: flex; align-items: center; gap: 12px;"><span id="planDot0"
+                  style="width: 11px; height: 11px; border-radius: 50%; background: var(--accent); transform: scale(1.4); transition: all 0.4s;"></span><span
+                  id="planLabel0"
+                  style="font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink); transition: color 0.4s;">Mensal</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;"><span id="planDot1"
+                  style="width: 11px; height: 11px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: all 0.4s;"></span><span
+                  id="planLabel1"
+                  style="font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink-dimmer); transition: color 0.4s;">Trimestral</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;"><span id="planDot2"
+                  style="width: 11px; height: 11px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: all 0.4s;"></span><span
+                  id="planLabel2"
+                  style="font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink-dimmer); transition: color 0.4s;">Semestral</span>
+              </div>
+            </div>
+            <div
+              style="width: 3px; height: 92px; background: var(--surface); border-radius: 3px; overflow: hidden; align-self: stretch;">
+              <div id="planBar"
+                style="width: 100%; height: 0%; background: linear-gradient(var(--accent), var(--teal)); transition: height 0.15s linear;">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- right: swapping panels -->
+        <div class="plan-panels-wrap" style="position: relative; height: 380px;">
+          <div id="planPanel0"
+            style="position: absolute; inset: 0; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 22px; padding: 38px; opacity: 1; transform: translateY(0) scale(1); transition: opacity 0.5s ease, transform 0.5s ease; box-shadow: 0 30px 70px rgba(0,0,0,0.3);">
+            <div
+              style="display: inline-flex; padding: 5px 13px; background: rgba(139,92,246,0.16); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 20px;">
+              Mensal · flexível</div>
+            <div style="display: flex; align-items: flex-end; gap: 10px;"><span
+                style="font-family: var(--font-mono); font-size: 58px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;"><span
+                  class="sf">R$ 14,90</span></span><span
+                style="color: var(--ink-dim); font-size: 16px; margin-bottom: 12px;">/mês</span></div>
+            <p style="color: var(--ink-dim); font-size: 15px; margin: 16px 0 24px;">Cancela quando quiser. Sem
+              fidelidade, sem multa, sem letrinha miúda.</p>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink);"><span
+                  style="color: var(--ok);">✓</span> Todos os recursos liberados</div>
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink);"><span
+                  style="color: var(--ok);">✓</span> Cobrado todo mês</div>
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink-dim);"><span
+                  style="color: var(--ink-dimmer);">—</span> Sem desconto</div>
+            </div>
+          </div>
+          <div id="planPanel1"
+            style="position: absolute; inset: 0; background: var(--bg-alt); border: 1px solid #1a4d45; border-radius: 22px; padding: 38px; opacity: 0; transform: translateY(40px) scale(0.96); transition: opacity 0.5s ease, transform 0.5s ease; box-shadow: 0 30px 70px rgba(0,191,165,0.22);">
+            <div
+              style="display: inline-flex; padding: 5px 13px; background: rgba(0,191,165,0.16); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 20px;">
+              Trimestral · mais popular</div>
+            <div style="display: flex; align-items: flex-end; gap: 10px;"><span
+                style="font-family: var(--font-mono); font-size: 58px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;"><span
+                  class="sf">R$ 13,30</span></span><span
+                style="color: var(--ink-dim); font-size: 16px; margin-bottom: 12px;">/mês</span></div>
+            <p style="color: var(--ink-dim); font-size: 15px; margin: 16px 0 24px;">R$ 39,90 a cada 3 meses. O ponto
+              ideal entre economia e flexibilidade.</p>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink);"><span
+                  style="color: var(--ok);">✓</span> Todos os recursos liberados</div>
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink);"><span
+                  style="color: var(--ok);">✓</span> Cobrado a cada 3 meses</div>
+              <div
+                style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--teal); font-weight: 600;">
+                <span style="color: var(--teal);">✓</span> <span class="sf">11%</span> mais barato
+              </div>
+            </div>
+          </div>
+          <div id="planPanel2"
+            style="position: absolute; inset: 0; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 22px; padding: 38px; opacity: 0; transform: translateY(40px) scale(0.96); transition: opacity 0.5s ease, transform 0.5s ease; box-shadow: 0 30px 70px rgba(108,43,217,0.22);">
+            <div
+              style="display: inline-flex; padding: 5px 13px; background: rgba(108,43,217,0.2); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--accent-dark); margin-bottom: 20px;">
+              Semestral · melhor custo-benefício</div>
+            <div style="display: flex; align-items: flex-end; gap: 10px;"><span
+                style="font-family: var(--font-mono); font-size: 58px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;"><span
+                  class="sf">R$ 11,65</span></span><span
+                style="color: var(--ink-dim); font-size: 16px; margin-bottom: 12px;">/mês</span></div>
+            <p style="color: var(--ink-dim); font-size: 15px; margin: 16px 0 24px;">R$ 69,90 a cada 6 meses. O menor
+              preço por mês que o MyBills tem.</p>
+            <div style="display: flex; flex-direction: column; gap: 11px;">
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink);"><span
+                  style="color: var(--ok);">✓</span> Todos os recursos liberados</div>
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink);"><span
+                  style="color: var(--ok);">✓</span> Cobrado a cada 6 meses</div>
+              <div
+                style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--accent-dark); font-weight: 600;">
+                <span style="color: var(--accent-dark);">✓</span> <span class="sf">22%</span> mais barato
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GRID DE PREÇOS FINAL ============ -->
+  <section id="precos" style="position: relative; padding: 40px 40px 120px; background: var(--bg);">
+    <div style="max-width: 1080px; margin: 0 auto;">
+      <div style="text-align: center; margin-bottom: 48px;">
+        <h2 class="blur-h2"
+          style="font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 40px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 10px;">
+          Escolha por quanto tempo.</h2>
+        <p style="color: var(--ink-dim); font-size: 16px; margin: 0;">O resto é idêntico. Prometido.</p>
+      </div>
+      <div class="grid-3to1"
+        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start;">
+        <!-- mensal -->
+        <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 20px; padding: 32px;">
+          <div style="font-family: var(--font-body); font-size: 17px; font-weight: 700; margin-bottom: 6px;">Mensal
+          </div>
+          <div style="color: var(--ink-dimmer); font-size: 13px; margin-bottom: 22px;">Flexível</div>
+          <div style="display: flex; align-items: flex-end; gap: 6px; margin-bottom: 4px;"><span
+              style="font-family: var(--font-mono); font-size: 38px; font-weight: 700; letter-spacing: -0.02em;"><span
+                class="sf">R$ 14,90</span></span><span
+              style="color: var(--ink-dim); font-size: 14px; margin-bottom: 8px;">/mês</span></div>
+          <div style="color: var(--ink-dimmer); font-size: 13px; margin-bottom: 24px;">R$ 14,90 cobrado mensalmente
+          </div>
+          <a href="#cta"
+            style="display: block; text-align: center; padding: 12px; background: var(--surface); border: 1px solid var(--border); color: var(--ink); border-radius: 11px; font-weight: 600; font-size: 15px; margin-bottom: 24px;">Começar
+            mensal</a>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-size: 14px; color: var(--ink-dim);"><span
+                style="color: var(--ok); margin-right: 8px;">✓</span>Todos os recursos</div>
+            <div style="font-size: 14px; color: var(--ink-dim);"><span
+                style="color: var(--ok); margin-right: 8px;">✓</span>Importação OFX ilimitada</div>
+            <div style="font-size: 14px; color: var(--ink-dim);"><span
+                style="color: var(--ok); margin-right: 8px;">✓</span>MyBills Wrapped</div>
+          </div>
+        </div>
+        <!-- trimestral - popular : StarBorder permanente -->
+        <div style="position: relative;">
+          <span
+            style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); z-index: 2; padding: 5px 14px; background: var(--teal); color: #06231e; border-radius: 999px; font-size: 12px; font-weight: 700;">MAIS
+            POPULAR</span>
+          <span class="star-border-container star-border-card">
+            <span class="border-gradient-bottom"
+              style="background: radial-gradient(circle, var(--teal), transparent 10%); animation-duration: 4s;"></span>
+            <span class="border-gradient-top"
+              style="background: radial-gradient(circle, var(--teal), transparent 10%); animation-duration: 4s;"></span>
+            <div class="star-inner"
+              style="position: relative; background: linear-gradient(160deg, #16211f, #161616); border: 1.5px solid var(--teal); border-radius: 20px; padding: 32px; box-shadow: 0 24px 60px rgba(0,191,165,0.16);">
+              <div style="font-family: var(--font-body); font-size: 17px; font-weight: 700; margin-bottom: 6px;">
+                Trimestral</div>
+              <div style="color: var(--ink-dimmer); font-size: 13px; margin-bottom: 22px;">O favorito da galera</div>
+              <div style="display: flex; align-items: flex-end; gap: 6px; margin-bottom: 4px;"><span
+                  style="font-family: var(--font-mono); font-size: 38px; font-weight: 700; letter-spacing: -0.02em;"><span
+                    class="sf">R$ 13,30</span></span><span
+                  style="color: var(--ink-dim); font-size: 14px; margin-bottom: 8px;">/mês</span></div>
+              <div style="color: var(--teal); font-size: 13px; margin-bottom: 24px; font-weight: 600;">R$ 39,90 a cada 3
+                meses · <span class="sf">-11%</span></div>
+              <a href="#cta"
+                style="display: block; text-align: center; padding: 12px; background: var(--teal); color: #06231e; border-radius: 11px; font-weight: 700; font-size: 15px; margin-bottom: 24px;">Começar
+                trimestral</a>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="font-size: 14px; color: var(--ink-dim);"><span
+                    style="color: var(--ok); margin-right: 8px;">✓</span>Todos os recursos</div>
+                <div style="font-size: 14px; color: var(--ink-dim);"><span
+                    style="color: var(--ok); margin-right: 8px;">✓</span>Importação OFX ilimitada</div>
+                <div style="font-size: 14px; color: var(--ink-dim);"><span
+                    style="color: var(--ok); margin-right: 8px;">✓</span>MyBills Wrapped</div>
+              </div>
+            </div>
+          </span>
+        </div>
+        <!-- semestral -->
+        <div
+          style="position: relative; background: linear-gradient(160deg, #1d1730, #161616); border: 1.5px solid var(--accent-dark); border-radius: 20px; padding: 32px; box-shadow: 0 24px 60px rgba(108,43,217,0.16);">
+          <span
+            style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); padding: 5px 14px; background: var(--accent-dark); color: var(--ink); border-radius: 999px; font-size: 12px; font-weight: 700;">MELHOR
+            CUSTO</span>
+          <div style="font-family: var(--font-body); font-size: 17px; font-weight: 700; margin-bottom: 6px;">Semestral
+          </div>
+          <div style="color: var(--ink-dimmer); font-size: 13px; margin-bottom: 22px;">Menor preço por mês</div>
+          <div style="display: flex; align-items: flex-end; gap: 6px; margin-bottom: 4px;"><span
+              style="font-family: var(--font-mono); font-size: 38px; font-weight: 700; letter-spacing: -0.02em;"><span
+                class="sf">R$ 11,65</span></span><span
+              style="color: var(--ink-dim); font-size: 14px; margin-bottom: 8px;">/mês</span></div>
+          <div style="color: var(--accent-dark); font-size: 13px; margin-bottom: 24px; font-weight: 600;">R$ 69,90 a
+            cada 6 meses · <span class="sf">-22%</span></div>
+          <a href="#cta"
+            style="display: block; text-align: center; padding: 12px; background: var(--accent-dark); color: var(--ink); border-radius: 11px; font-weight: 700; font-size: 15px; margin-bottom: 24px;">Começar
+            semestral</a>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="font-size: 14px; color: var(--ink-dim);"><span
+                style="color: var(--ok); margin-right: 8px;">✓</span>Todos os recursos</div>
+            <div style="font-size: 14px; color: var(--ink-dim);"><span
+                style="color: var(--ok); margin-right: 8px;">✓</span>Importação OFX ilimitada</div>
+            <div style="font-size: 14px; color: var(--ink-dim);"><span
+                style="color: var(--ok); margin-right: 8px;">✓</span>MyBills Wrapped</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEGURANÇA ============ -->
+  <section id="seguranca"
+    style="position: relative; padding: 120px 40px; background: var(--bg-alt); border-top: 1px solid var(--border);">
+    <div style="max-width: 1080px; margin: 0 auto;">
+      <div style="max-width: 600px; margin-bottom: 52px;">
+        <div
+          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
+          Segurança</div>
+        <h2 class="blur-h2"
+          style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 14px;">
+          Seu dinheiro é seu. Seus dados também.</h2>
+        <p style="color: var(--ink-dim); font-size: 17px; line-height: 1.6; margin: 0;">Nada de vender dado, nada de
+          gambiarra. As mesmas práticas que banco sério usa, sem enrolação técnica pra te impressionar.</p>
+      </div>
+      <div class="grid-4to2" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+        <div class="sec-card spotlight-card fade-content tilt" data-stagger="0"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 26px;">
+          <div class="card-index" style="font-size: 26px; margin-bottom: 12px;">01</div>
+          <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 0 0 8px;">JWT + cookie
+            HttpOnly</h3>
+          <p style="color: var(--ink-dim); font-size: 14px; line-height: 1.5; margin: 0;">Sua sessão vive num cookie que
+            o JavaScript não enxerga. Token roubado é bem mais difícil.</p>
+        </div>
+        <div class="sec-card spotlight-card fade-content tilt" data-stagger="1"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 26px;">
+          <div class="card-index" style="font-size: 26px; margin-bottom: 12px;">02</div>
+          <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 0 0 8px;">Senhas com
+            bcrypt</h3>
+          <p style="color: var(--ink-dim); font-size: 14px; line-height: 1.5; margin: 0;">Nem a gente lê sua senha. Ela
+            é guardada com hash forte e salt — irreversível.</p>
+        </div>
+        <div class="sec-card spotlight-card fade-content tilt" data-stagger="2"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 26px;">
+          <div class="card-index" style="font-size: 26px; margin-bottom: 12px;">03</div>
+          <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 0 0 8px;">Rate
+            limiting</h3>
+          <p style="color: var(--ink-dim); font-size: 14px; line-height: 1.5; margin: 0;">Tentativa em massa de login
+            trava sozinha. Força bruta não passa da porta.</p>
+        </div>
+        <div class="sec-card spotlight-card fade-content tilt" data-stagger="3"
+          style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 26px;">
+          <div class="card-index" style="font-size: 26px; margin-bottom: 12px;">04</div>
+          <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 0 0 8px;">Isolamento
+            por usuário</h3>
+          <p style="color: var(--ink-dim); font-size: 14px; line-height: 1.5; margin: 0;">Cada consulta é amarrada ao
+            seu ID. É impossível ler o dado de outra conta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" style="position: relative; padding: 120px 40px; background: var(--bg);">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <h2 class="blur-h2"
+        style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 40px; text-align: center;">
+        Perguntas diretas.</h2>
+      <div id="faqList" style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="faq-item fade-content"
+          style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;">
+          <button class="faq-toggle"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: none; border: none; cursor: pointer; text-align: left; color: var(--ink); font-family: var(--font-body); font-size: 16px; font-weight: 600;">
+            <span>Todo recurso está em todos os planos mesmo?</span>
+            <span class="faq-icon"
+              style="font-family: var(--font-mono); font-size: 20px; font-weight: 400; color: var(--ink-dimmer); transition: transform 0.3s ease, color 0.3s ease; flex: none;">+</span>
+          </button>
+          <div class="faq-answer"
+            style="max-height: 0px; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.35s ease;">
+            <p style="margin: 0; padding: 0 24px 22px; color: var(--ink-dim); font-size: 15px; line-height: 1.6;">Sim,
+              sem pegadinha. Cartão, importação OFX, cofrinhos, multimoeda e o Wrapped funcionam igual no mensal, no
+              trimestral e no semestral. O plano só muda por quanto tempo você apoia de uma vez.</p>
+          </div>
+        </div>
+        <div class="faq-item fade-content"
+          style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;">
+          <button class="faq-toggle"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: none; border: none; cursor: pointer; text-align: left; color: var(--ink); font-family: var(--font-body); font-size: 16px; font-weight: 600;">
+            <span>Preciso colocar cartão pra testar?</span>
+            <span class="faq-icon"
+              style="font-family: var(--font-mono); font-size: 20px; font-weight: 400; color: var(--ink-dimmer); transition: transform 0.3s ease, color 0.3s ease; flex: none;">+</span>
+          </button>
+          <div class="faq-answer"
+            style="max-height: 0px; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.35s ease;">
+            <p style="margin: 0; padding: 0 24px 22px; color: var(--ink-dim); font-size: 15px; line-height: 1.6;">Não.
+              Você cria a conta e usa tudo. Se decidir apoiar o projeto, aí escolhe um plano. Sem cobrança automática
+              por trás.</p>
+          </div>
+        </div>
+        <div class="faq-item fade-content"
+          style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;">
+          <button class="faq-toggle"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: none; border: none; cursor: pointer; text-align: left; color: var(--ink); font-family: var(--font-body); font-size: 16px; font-weight: 600;">
+            <span>Posso cancelar quando quiser?</span>
+            <span class="faq-icon"
+              style="font-family: var(--font-mono); font-size: 20px; font-weight: 400; color: var(--ink-dimmer); transition: transform 0.3s ease, color 0.3s ease; flex: none;">+</span>
+          </button>
+          <div class="faq-answer"
+            style="max-height: 0px; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.35s ease;">
+            <p style="margin: 0; padding: 0 24px 22px; color: var(--ink-dim); font-size: 15px; line-height: 1.6;">Pode.
+              No mensal você cancela a qualquer momento sem multa. Nos planos maiores, o acesso continua até o fim do
+              período que você já pagou.</p>
+          </div>
+        </div>
+        <div class="faq-item fade-content"
+          style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;">
+          <button class="faq-toggle"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: none; border: none; cursor: pointer; text-align: left; color: var(--ink); font-family: var(--font-body); font-size: 16px; font-weight: 600;">
+            <span>Meus dados bancários ficam seguros?</span>
+            <span class="faq-icon"
+              style="font-family: var(--font-mono); font-size: 20px; font-weight: 400; color: var(--ink-dimmer); transition: transform 0.3s ease, color 0.3s ease; flex: none;">+</span>
+          </button>
+          <div class="faq-answer"
+            style="max-height: 0px; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.35s ease;">
+            <p style="margin: 0; padding: 0 24px 22px; color: var(--ink-dim); font-size: 15px; line-height: 1.6;">Ficam.
+              Senhas com bcrypt, sessão em cookie HttpOnly, rate limiting contra ataques e isolamento total por usuário.
+              E a gente não vende dado de ninguém.</p>
+          </div>
+        </div>
+        <div class="faq-item fade-content"
+          style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;">
+          <button class="faq-toggle"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: none; border: none; cursor: pointer; text-align: left; color: var(--ink); font-family: var(--font-body); font-size: 16px; font-weight: 600;">
+            <span>Funciona com o meu banco?</span>
+            <span class="faq-icon"
+              style="font-family: var(--font-mono); font-size: 20px; font-weight: 400; color: var(--ink-dimmer); transition: transform 0.3s ease, color 0.3s ease; flex: none;">+</span>
+          </button>
+          <div class="faq-answer"
+            style="max-height: 0px; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.35s ease;">
+            <p style="margin: 0; padding: 0 24px 22px; color: var(--ink-dim); font-size: 15px; line-height: 1.6;">Se o
+              seu banco exporta extrato em OFX (praticamente todos exportam), funciona. Você sobe o arquivo e o MyBills
+              concilia os lançamentos automaticamente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section id="cta"
+    style="position: relative; padding: 130px 40px 140px; background: var(--bg-alt); border-top: 1px solid var(--border); overflow: hidden;">
+    <div class="parallax-blob" data-parallax="0.1" data-base-transform="translate(-50%,-50%)"
+      style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(108,43,217,0.22), transparent 62%); filter: blur(30px); pointer-events: none;">
+    </div>
+    <div style="position: relative; max-width: 720px; margin: 0 auto; text-align: center;">
+      <img src="logo.png" alt="MyBills" class="fade-content" data-stagger="0"
+        style="width: 60px; height: 60px; margin: 0 auto 26px; display: block;">
+      <h2 class="blur-h2"
+        style="font-family: var(--font-display); font-size: clamp(32px, 5vw, 58px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.08; margin: 0 0 20px; text-wrap: balance;">
+        Comece hoje com tudo liberado.</h2>
+      <p class="fade-content" data-stagger="2"
+        style="color: var(--ink-dim); font-size: 18px; line-height: 1.55; margin: 0 0 36px;">Sem cartão pra testar, sem
+        recurso escondido. Se gostar, escolhe um plano pra apoiar. Simples.</p>
+      <div class="fade-content" data-stagger="3"
+        style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+        <span class="star-border-container magnetic">
+          <span class="border-gradient-bottom"
+            style="background: radial-gradient(circle, var(--accent), transparent 10%); animation-duration: 5s;"></span>
+          <span class="border-gradient-top"
+            style="background: radial-gradient(circle, var(--teal), transparent 10%); animation-duration: 5s;"></span>
+          <a href="#planos" class="star-inner"
+            style="display: inline-flex; align-items: center; gap: 9px; padding: 16px 34px; background: linear-gradient(135deg, var(--accent-dark), var(--accent)); color: #fff; border-radius: 13px; font-size: 17px; font-weight: 600; box-shadow: 0 14px 40px rgba(108,43,217,0.45);">Criar
+            minha conta →</a>
+        </span>
+      </div>
+      <p class="fade-content" data-stagger="4"
+        style="margin: 40px 0 0; font-size: 13px; color: var(--ink-dimmer); font-style: italic;">Feito pra mim. Bom o
+        bastante pra qualquer um.</p>
+    </div>
+    <footer
+      style="position: relative; max-width: 1080px; margin: 90px auto 0; padding-top: 30px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 10px;"><img src="logo.png" alt="MyBills"
+          style="width: 26px; height: 26px;"><span
+          style="font-family: var(--font-display); font-weight: 700; font-size: 16px;">MyBills</span></div>
+      <div style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-dimmer);">© 2026 MyBills · Controle
+        financeiro pessoal</div>
+    </footer>
+  </section>
+
+  <script src="app.js"></script>
+  <script type="module" src="particles.js"></script>
+</body>
+
+</html>

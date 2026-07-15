@@ -1,0 +1,177 @@
+ INFO  Accepting connections at http://localhost:8080
+ HTTP  07/07/2026 22:16:09 ::1 GET /index.html
+ HTTP  07/07/2026 22:16:09 ::1 Returned 301 in 91 ms
+ HTTP  07/07/2026 22:16:16 ::1 GET /index.html
+ HTTP  07/07/2026 22:16:16 ::1 Returned 301 in 0 ms
+ HTTP  07/07/2026 22:17:12 ::1 GET /
+ HTTP  07/07/2026 22:17:12 ::1 Returned 200 in 6 ms
+ HTTP  07/07/2026 22:17:12 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:12 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:17:12 ::1 GET /app.js
+ HTTP  07/07/2026 22:17:12 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:17:12 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:12 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:12 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:12 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:13 ::1 GET /
+ HTTP  07/07/2026 22:17:13 ::1 Returned 304 in 3 ms
+ HTTP  07/07/2026 22:17:13 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:13 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:13 ::1 GET /app.js
+ HTTP  07/07/2026 22:17:13 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:41 ::1 GET /
+ HTTP  07/07/2026 22:17:41 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:41 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:41 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:41 ::1 GET /app.js
+ HTTP  07/07/2026 22:17:41 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:41 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:41 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:44 ::1 GET /
+ HTTP  07/07/2026 22:17:44 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:44 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:44 ::1 GET /app.js
+ HTTP  07/07/2026 22:17:44 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:44 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:44 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:44 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:50 ::1 GET /
+ HTTP  07/07/2026 22:17:50 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:50 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:50 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:50 ::1 GET /app.js
+ HTTP  07/07/2026 22:17:50 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:50 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:50 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:17:52 ::1 GET /
+ HTTP  07/07/2026 22:17:52 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:52 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:52 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:52 ::1 GET /app.js
+ HTTP  07/07/2026 22:17:52 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:17:52 ::1 GET /logo.png
+ HTTP  07/07/2026 22:17:52 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:15 ::1 GET /
+ HTTP  07/07/2026 22:19:15 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:15 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:15 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:15 ::1 GET /app.js
+ HTTP  07/07/2026 22:19:15 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:16 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:16 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:17 ::1 GET /
+ HTTP  07/07/2026 22:19:17 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:17 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:17 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:17 ::1 GET /app.js
+ HTTP  07/07/2026 22:19:17 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:18 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:18 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:22 ::1 GET /
+ HTTP  07/07/2026 22:19:22 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:22 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:22 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:22 ::1 GET /app.js
+ HTTP  07/07/2026 22:19:22 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:22 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:22 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:23 ::1 GET /
+ HTTP  07/07/2026 22:19:23 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:23 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:23 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:23 ::1 GET /app.js
+ HTTP  07/07/2026 22:19:23 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:23 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:23 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:26 ::1 GET /
+ HTTP  07/07/2026 22:19:26 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:26 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:26 ::1 GET /app.js
+ HTTP  07/07/2026 22:19:26 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:19:26 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:19:26 ::1 GET /logo.png
+ HTTP  07/07/2026 22:19:26 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:22:55 ::1 GET /
+ HTTP  07/07/2026 22:22:55 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:22:55 ::1 GET /logo.png
+ HTTP  07/07/2026 22:22:55 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:22:55 ::1 GET /app.js
+ HTTP  07/07/2026 22:22:55 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:22:56 ::1 GET /logo.png
+ HTTP  07/07/2026 22:22:56 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:22:57 ::1 GET /
+ HTTP  07/07/2026 22:22:57 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:22:57 ::1 GET /logo.png
+ HTTP  07/07/2026 22:22:57 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:22:57 ::1 GET /app.js
+ HTTP  07/07/2026 22:22:57 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:22:57 ::1 GET /logo.png
+ HTTP  07/07/2026 22:22:57 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:22:58 ::1 GET /
+ HTTP  07/07/2026 22:22:58 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:22:58 ::1 GET /logo.png
+ HTTP  07/07/2026 22:22:58 ::1 GET /app.js
+ HTTP  07/07/2026 22:22:58 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:22:58 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:22:58 ::1 GET /logo.png
+ HTTP  07/07/2026 22:22:58 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:26:07 ::1 GET /
+ HTTP  07/07/2026 22:26:07 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:26:07 ::1 GET /logo.png
+ HTTP  07/07/2026 22:26:07 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:26:07 ::1 GET /app.js
+ HTTP  07/07/2026 22:26:07 ::1 Returned 200 in 2 ms
+ HTTP  07/07/2026 22:26:07 ::1 GET /logo.png
+ HTTP  07/07/2026 22:26:07 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:35:11 ::1 GET /
+ HTTP  07/07/2026 22:35:11 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:35:11 ::1 GET /logo.png
+ HTTP  07/07/2026 22:35:11 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:35:11 ::1 GET /app.js
+ HTTP  07/07/2026 22:35:11 ::1 Returned 200 in 2 ms
+ HTTP  07/07/2026 22:35:11 ::1 GET /logo.png
+ HTTP  07/07/2026 22:35:11 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:39:44 ::1 GET /
+ HTTP  07/07/2026 22:39:44 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:39:44 ::1 GET /logo.png
+ HTTP  07/07/2026 22:39:44 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:39:44 ::1 GET /app.js
+ HTTP  07/07/2026 22:39:44 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:39:44 ::1 GET /logo.png
+ HTTP  07/07/2026 22:39:44 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:44:37 ::1 GET /
+ HTTP  07/07/2026 22:44:37 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:44:37 ::1 GET /logo.png
+ HTTP  07/07/2026 22:44:37 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:44:37 ::1 GET /app.js
+ HTTP  07/07/2026 22:44:37 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:44:37 ::1 GET /logo.png
+ HTTP  07/07/2026 22:44:37 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:45:48 ::1 GET /
+ HTTP  07/07/2026 22:45:48 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:45:48 ::1 GET /logo.png
+ HTTP  07/07/2026 22:45:48 ::1 GET /app.js
+ HTTP  07/07/2026 22:45:48 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:45:48 ::1 Returned 200 in 2 ms
+ HTTP  07/07/2026 22:45:48 ::1 GET /logo.png
+ HTTP  07/07/2026 22:45:48 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:52:21 ::1 GET /
+ HTTP  07/07/2026 22:52:21 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:52:21 ::1 GET /logo.png
+ HTTP  07/07/2026 22:52:21 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:52:21 ::1 GET /app.js
+ HTTP  07/07/2026 22:52:21 ::1 Returned 200 in 1 ms
+ HTTP  07/07/2026 22:52:21 ::1 GET /logo.png
+ HTTP  07/07/2026 22:52:21 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:52:22 ::1 GET /
+ HTTP  07/07/2026 22:52:22 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:52:22 ::1 GET /logo.png
+ HTTP  07/07/2026 22:52:22 ::1 Returned 304 in 0 ms
+ HTTP  07/07/2026 22:52:22 ::1 GET /app.js
+ HTTP  07/07/2026 22:52:22 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:52:22 ::1 GET /logo.png
+ HTTP  07/07/2026 22:52:22 ::1 Returned 304 in 1 ms
+ HTTP  07/07/2026 22:52:36 ::1 GET /.well-known/appspecific/com.chrome.devtools.json
+ HTTP  07/07/2026 22:52:36 ::1 Returned 404 in 2 ms
+ HTTP  07/07/2026 22:52:44 ::1 GET /.well-known/appspecific/com.chrome.devtools.json
+ HTTP  07/07/2026 22:52:44 ::1 Returned 404 in 1 ms
