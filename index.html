@@ -626,7 +626,6 @@
       /* Reduce giant price font on mobile (scoped to the big price
          display only — the inline "-11%"/"-22%" discount text inside
          the small sentence must keep its own small font-size) */
-      .plan-panels-wrap .sf,
       #precos div[style*="font-size: 38px"] .sf {
         font-size: 38px !important;
       }
@@ -684,8 +683,9 @@
         text-align: center !important;
       }
 
-      /* Plan panel: price font too big on mobile */
-      .plan-panels-wrap .sf {
+      /* Plan panel: price font too big on mobile (scoped to the big
+         price display only, not the small inline "11%"/"22%" discount) */
+      .plan-panels-wrap span[style*="font-size: 58px"] .sf {
         font-size: 32px !important;
         letter-spacing: -0.01em !important;
       }
