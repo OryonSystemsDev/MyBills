@@ -35,19 +35,22 @@ function registerScrollUpdate(fn) {
 function initBlurText() {
   var els = document.querySelectorAll('.blur-h2');
   els.forEach(function (el) {
-    var text = el.textContent;
+    var text = el.textContent.trim().replace(/\s+/g, ' ');
     el.setAttribute('aria-label', text);
     var words = text.split(' ');
     el.innerHTML = words.map(function (w, i) {
-      return '<span class="blur-word" style="transition-delay: ' + (i * 0.2) + 's;">' + w + '</span>';
+      return '<span class="blur-word" style="transition-delay: ' + (i * 0.03) + 's;">' + w + '</span>';
     }).join(' ');
 
     var wordEls = el.querySelectorAll('.blur-word');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        wordEls.forEach(function (w) { w.classList.toggle('in-view', entry.isIntersecting); });
+        if (entry.isIntersecting) {
+          wordEls.forEach(function (w) { w.classList.add('in-view'); });
+          io.unobserve(el);
+        }
       });
-    }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
     io.observe(el);
   });
 }
@@ -77,9 +80,12 @@ function initScrollFloat() {
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        el.classList.toggle('in-view', entry.isIntersecting);
+        if (entry.isIntersecting) {
+          el.classList.add('in-view');
+          io.unobserve(el);
+        }
       });
-    }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
     io.observe(el);
   });
 }
@@ -95,21 +101,16 @@ function initScrollFloat() {
 // ============================================================
 function initFadeContent() {
   var els = document.querySelectorAll('.fade-content, .reveal-mockup');
-  var timers = new WeakMap();
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       var el = entry.target;
-      var pending = timers.get(el);
-      if (pending) clearTimeout(pending);
       if (entry.isIntersecting) {
-        var stagger = el.dataset.stagger ? parseInt(el.dataset.stagger, 10) * 90 : 0;
-        var t = setTimeout(function () { el.classList.add('is-visible'); }, stagger);
-        timers.set(el, t);
-      } else {
-        el.classList.remove('is-visible');
+        var stagger = el.dataset.stagger ? parseInt(el.dataset.stagger, 10) * 55 : 0;
+        setTimeout(function () { el.classList.add('is-visible'); }, stagger);
+        io.unobserve(el);
       }
     });
-  }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+  }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
   els.forEach(function (el) { io.observe(el); });
 }
 
@@ -299,8 +300,10 @@ function initPizzaChart() {
 
   function update() {
     var vh = window.innerHeight;
-    var rect = section.getBoundingClientRect();
-    var p = (vh - rect.top) / vh;
+    var chartRect = container.getBoundingClientRect();
+    var chartCenter = chartRect.top + chartRect.height / 2;
+    // p=0 when chart center at viewport bottom, p=1 when chart center at viewport center
+    var p = 1 - (chartCenter - vh / 2) / (vh / 2);
     p = Math.max(0, Math.min(1, p));
     var n = arcs.length;
     arcs.forEach(function (arc, i) {
@@ -346,6 +349,11 @@ function initHeroLoadIn() {
     if (revealed) return;
     revealed = true;
     document.body.classList.add('is-loaded');
+    // Scroll animations only start AFTER the MYBILLS intro finishes
+    initBlurText();
+    initScrollFloat();
+    initFadeContent();
+    initCountUp();
   }
   setTimeout(reveal, 1700);
 }
@@ -583,16 +591,12 @@ function initTour() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  initBlurText();
-  initScrollFloat();
-  initFadeContent();
   initScrollScale();
   initPlansSwap();
   initFaqAccordion();
   initSpotlightCard();
   initPizzaChart();
-  initHeroLoadIn();
-  initCountUp();
+  initHeroLoadIn(); // calls initBlurText/ScrollFloat/FadeContent/CountUp after 1700ms
   initMagnetic();
   initTilt();
   initNavProgress();

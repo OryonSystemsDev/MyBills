@@ -141,23 +141,21 @@
 
     /* ---------- BlurText ---------- */
     .blur-word {
-      display: inline-block;
-      filter: blur(10px);
+      filter: blur(6px);
       opacity: 0;
-      transform: translateY(-50px);
-      transition: filter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform, filter, opacity;
+      transition: filter 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: filter, opacity;
     }
 
     .blur-word.in-view {
       filter: blur(0px);
       opacity: 1;
-      transform: translateY(0px);
     }
 
     /* ---------- ScrollFloat ---------- */
     .sf {
       display: inline-block;
+      white-space: nowrap;
     }
 
     .sf-char-wrap {
@@ -169,7 +167,7 @@
       display: inline-block;
       transform: translateY(120%);
       opacity: 0;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
     }
 
@@ -181,8 +179,8 @@
     /* ---------- FadeContent ---------- */
     .fade-content {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+      transform: translateY(18px);
+      transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
     }
 
     .fade-content.is-visible {
@@ -357,8 +355,8 @@
     /* ---------- Mockup scroll reveal (dashboard + card + bars) ---------- */
     .reveal-mockup {
       opacity: 0;
-      transform: translateY(46px) scale(0.95);
-      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(30px) scale(0.97);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
     }
 
@@ -613,6 +611,113 @@
       .hero-chip {
         display: none !important;
       }
+
+      /* Planos scroll-swap section */
+      #planos > div > .grid-2col {
+        padding: 0 20px !important;
+        gap: 28px !important;
+      }
+
+      .plan-panels-wrap {
+        height: auto !important;
+        min-height: 300px !important;
+      }
+
+      /* Reduce giant price font on mobile (scoped to the big price
+         display only — the inline "-11%"/"-22%" discount text inside
+         the small sentence must keep its own small font-size) */
+      .plan-panels-wrap .sf,
+      #precos div[style*="font-size: 38px"] .sf {
+        font-size: 38px !important;
+      }
+
+      /* Plan panels padding */
+      #planPanel0,
+      #planPanel1,
+      #planPanel2 {
+        padding: 24px !important;
+      }
+
+      /* Relatorios: pizza chart + table stacked */
+      #relatorios .grid-2col > div:first-child {
+        order: 2;
+      }
+      #relatorios .grid-2col > .fade-content {
+        order: 1;
+      }
+
+      /* Cartão section: card before text */
+      #cartao .grid-2col > .reveal-mockup {
+        order: 1;
+      }
+      #cartao .grid-2col > .fade-content {
+        order: 2;
+      }
+
+      /* Hero heading size */
+      h1 {
+        font-size: clamp(32px, 8vw, 56px) !important;
+      }
+
+      /* Foco section heading */
+      #focoHeading h2 {
+        font-size: clamp(28px, 8vw, 56px) !important;
+      }
+
+      /* Tour tabs wrap nicely */
+      #tourTabs {
+        gap: 8px !important;
+      }
+
+      .tour-tab {
+        font-size: 13px !important;
+        padding: 8px 12px 11px !important;
+      }
+
+      /* CTA section */
+      #cta {
+        padding: 80px 20px 90px !important;
+      }
+
+      #cta footer {
+        flex-direction: column !important;
+        text-align: center !important;
+      }
+
+      /* Plan panel: price font too big on mobile */
+      .plan-panels-wrap .sf {
+        font-size: 32px !important;
+        letter-spacing: -0.01em !important;
+      }
+
+      /* Plan panel badge overflow */
+      #planPanel0 > div:first-child,
+      #planPanel1 > div:first-child,
+      #planPanel2 > div:first-child {
+        white-space: normal !important;
+        font-size: 11px !important;
+      }
+
+      /* ---------- Section headings: centered on mobile
+         (desktop keeps the default left alignment) ---------- */
+      #recursos div[style*="max-width: 620px"],
+      #tour div[style*="max-width: 620px"],
+      #seguranca div[style*="max-width: 600px"],
+      #wrapped > div > h2.blur-h2,
+      #wrapped > div > p,
+      #cartao .grid-2col > .fade-content,
+      #relatorios .grid-2col > .fade-content,
+      #planos .grid-2col > div:first-child {
+        text-align: center !important;
+      }
+
+      #cartao .grid-2col > .fade-content .grid-legend {
+        justify-content: center !important;
+      }
+
+      #planos .grid-2col > div:first-child > div[style*="align-items: center"] {
+        justify-content: center !important;
+      }
     }
   </style>
 </head>
@@ -695,7 +800,7 @@
           freemium furado · Todo recurso, em todo plano</span>
       </div>
       <h1 class="hero-reveal"
-        style="font-family: var(--font-display); font-weight: 600; font-size: clamp(40px, 6vw, 76px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 26px; text-wrap: balance; transition-delay: 0.2s;">
+        style="font-family: var(--font-display); font-weight: 600; font-size: clamp(40px, 6vw, 76px); line-height: 1.04; letter-spacing: -0.02em; margin: 0 0 26px; transition-delay: 0.2s;">
         Controle financeiro sério.<br><span style="font-style: italic; color: var(--accent);">Sem travar recurso atrás
           de plano.</span>
       </h1>
@@ -860,7 +965,7 @@
         </div>
         <div class="fade-content" data-stagger="1" style="background: var(--bg); padding: 34px 28px;">
           <div
-            style="font-family: var(--font-mono); font-size: clamp(34px, 4.4vw, 54px); font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--ok);">
+            style="font-family: var(--font-mono); font-size: clamp(30px, 3.8vw, 46px); font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--ok); white-space: nowrap;">
             <span data-count="71.9" data-prefix="R$ " data-decimals="1">R$ 71,9</span><span
               style="font-size: 0.5em; color: var(--ink-dim);">k</span>
           </div>
@@ -1534,7 +1639,7 @@
       <img src="logo.png" alt="MyBills" class="fade-content" data-stagger="0"
         style="width: 60px; height: 60px; margin: 0 auto 26px; display: block;">
       <h2 class="blur-h2"
-        style="font-family: var(--font-display); font-size: clamp(32px, 5vw, 58px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.08; margin: 0 0 20px; text-wrap: balance;">
+        style="font-family: var(--font-display); font-size: clamp(28px, 4.5vw, 52px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.08; margin: 0 0 20px;">
         Comece hoje com tudo liberado.</h2>
       <p class="fade-content" data-stagger="2"
         style="color: var(--ink-dim); font-size: 18px; line-height: 1.55; margin: 0 0 36px;">Sem cartão pra testar, sem
