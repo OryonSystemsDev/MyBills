@@ -321,6 +321,7 @@
         -webkit-text-stroke-width 0.7s ease 0.9s,
         -webkit-text-stroke-color 0.7s ease 0.9s;
     }
+
     #heroIntroWord.is-active {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
@@ -624,7 +625,7 @@
       }
 
       /* Planos scroll-swap section */
-      #planos > div > .grid-2col {
+      #planos>div>.grid-2col {
         padding: 0 20px !important;
         gap: 28px !important;
       }
@@ -649,18 +650,20 @@
       }
 
       /* Relatorios: pizza chart + table stacked */
-      #relatorios .grid-2col > div:first-child {
+      #relatorios .grid-2col>div:first-child {
         order: 2;
       }
-      #relatorios .grid-2col > .fade-content {
+
+      #relatorios .grid-2col>.fade-content {
         order: 1;
       }
 
       /* Cartão section: card before text */
-      #cartao .grid-2col > .reveal-mockup {
+      #cartao .grid-2col>.reveal-mockup {
         order: 1;
       }
-      #cartao .grid-2col > .fade-content {
+
+      #cartao .grid-2col>.fade-content {
         order: 2;
       }
 
@@ -702,9 +705,9 @@
       }
 
       /* Plan panel badge overflow */
-      #planPanel0 > div:first-child,
-      #planPanel1 > div:first-child,
-      #planPanel2 > div:first-child {
+      #planPanel0>div:first-child,
+      #planPanel1>div:first-child,
+      #planPanel2>div:first-child {
         white-space: normal !important;
         font-size: 11px !important;
       }
@@ -714,20 +717,49 @@
       #recursos div[style*="max-width: 620px"],
       #tour div[style*="max-width: 620px"],
       #seguranca div[style*="max-width: 600px"],
-      #wrapped > div > h2.blur-h2,
-      #wrapped > div > p,
-      #cartao .grid-2col > .fade-content,
-      #relatorios .grid-2col > .fade-content,
-      #planos .grid-2col > div:first-child {
+      #wrapped>div>h2.blur-h2,
+      #wrapped>div>p,
+      #cartao .grid-2col>.fade-content,
+      #relatorios .grid-2col>.fade-content,
+      #planos .grid-2col>div:first-child {
         text-align: center !important;
       }
 
-      #cartao .grid-2col > .fade-content .grid-legend {
+      #cartao .grid-2col>.fade-content .grid-legend {
         justify-content: center !important;
       }
 
-      #planos .grid-2col > div:first-child > div[style*="align-items: center"] {
+      #planos .grid-2col>div:first-child>div[style*="align-items: center"] {
         justify-content: center !important;
+      }
+    }
+
+    /* ---------- Reduced motion ----------
+       Collapses every CSS animation/transition to effectively instant
+       (rather than removing them) so end states — including ones set
+       inline by app.js — still land correctly, just without the motion.
+       JS-driven continuous effects (particles, parallax, tilt, magnetic,
+       the foco scroll-scale) are separately gated in app.js/particles.js. */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      #particles-canvas {
+        display: none;
+      }
+
+      .parallax-blob {
+        transform: none !important;
       }
     }
   </style>
@@ -1010,9 +1042,6 @@
       </div>
       <div id="focoHeading"
         style="position: relative; text-align: center; transform: scale(0.35); opacity: 0.15; transform-origin: center; will-change: transform, opacity; padding: 0 40px;">
-        <div
-          style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dimmer); margin-bottom: 20px;">
-          A ideia é simples</div>
         <h2
           style="font-family: var(--font-display); font-size: clamp(38px, 6.5vw, 88px); font-weight: 600; line-height: 1.05; letter-spacing: -0.015em; margin: 0; max-width: 14ch;">
           Seu dinheiro merece <span style="font-style: italic; color: var(--accent);">um app inteiro</span>, não meio
@@ -1027,8 +1056,11 @@
     <div style="max-width: 1160px; margin: 0 auto;">
       <div style="max-width: 620px; margin-bottom: 56px;">
         <div
-          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
-          O que você leva</div>
+          style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; margin-bottom: 16px;">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent);"></span>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); font-weight: 500;">O que
+            você leva</span>
+        </div>
         <h2 class="blur-h2"
           style="font-family: var(--font-display); font-size: clamp(30px, 4vw, 46px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 14px;">
           Seis motivos. Zero asteriscos.</h2>
@@ -1097,8 +1129,12 @@
     <div style="position: relative; max-width: 1080px; margin: 0 auto;">
       <div style="max-width: 620px; margin-bottom: 40px;">
         <div
-          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
-          Por dentro do app</div>
+          style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; margin-bottom: 16px;">
+          <span
+            style="width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok);"></span>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); font-weight: 500;">Por
+            dentro do app</span>
+        </div>
         <h2 class="blur-h2"
           style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 44px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 14px;">
           O app de verdade, sem photoshop.</h2>
@@ -1142,9 +1178,6 @@
     <div class="grid-2col"
       style="max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
       <div class="fade-content">
-        <div
-          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
-          Cartão de crédito</div>
         <h2 class="blur-h2"
           style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 16px;">
           Você vê o limite virar antes de estourar.</h2>
@@ -1226,9 +1259,6 @@
         </div>
       </div>
       <div class="fade-content">
-        <div
-          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
-          Relatórios</div>
         <h2 class="blur-h2"
           style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 16px;">
           Pra onde foi o dinheiro? Óbvio, num olhar.</h2>
@@ -1504,8 +1534,11 @@
     <div style="max-width: 1080px; margin: 0 auto;">
       <div style="max-width: 600px; margin-bottom: 52px;">
         <div
-          style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">
-          Segurança</div>
+          style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; margin-bottom: 16px;">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent);"></span>
+          <span
+            style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-dim); font-weight: 500;">Segurança</span>
+        </div>
         <h2 class="blur-h2"
           style="font-family: var(--font-display); font-size: clamp(28px, 3.6vw, 42px); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 14px;">
           Seu dinheiro é seu. Seus dados também.</h2>
@@ -1515,7 +1548,6 @@
       <div class="grid-4to2" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
         <div class="sec-card spotlight-card fade-content tilt" data-stagger="0"
           style="position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 26px;">
-          <div class="card-index" style="font-size: 26px; margin-bottom: 12px;">01</div>
           <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 0 0 8px;">JWT + cookie
             HttpOnly</h3>
           <p style="color: var(--ink-dim); font-size: 14px; line-height: 1.5; margin: 0;">Sua sessão vive num cookie que

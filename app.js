@@ -5,6 +5,8 @@
 // scroll-driven effects share one requestAnimationFrame tick
 // instead of each recomputing on every raw scroll event.
 // ============================================================
+var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 var scrollUpdaters = [];
 function registerScrollUpdate(fn) {
   scrollUpdaters.push(fn);
@@ -121,6 +123,12 @@ function initScrollScale() {
   var wrap = document.getElementById('foco');
   var heading = document.getElementById('focoHeading');
   if (!wrap || !heading) return;
+
+  if (prefersReducedMotion) {
+    heading.style.transform = 'scale(1)';
+    heading.style.opacity = '1';
+    return;
+  }
 
   function update() {
     var vh = window.innerHeight;
@@ -409,6 +417,7 @@ function initCountUp() {
 // on touch, where hover doesn't make sense).
 // ============================================================
 function initMagnetic() {
+  if (prefersReducedMotion) return;
   if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
   var strength = 0.35;
   document.querySelectorAll('.magnetic').forEach(function (el) {
@@ -433,6 +442,7 @@ function initMagnetic() {
 // active). Fine-pointer only.
 // ============================================================
 function initTilt() {
+  if (prefersReducedMotion) return;
   if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
   document.querySelectorAll('.tilt').forEach(function (el) {
     var max = parseFloat(el.dataset.tiltMax) || 7;
@@ -498,6 +508,7 @@ function initActiveNav() {
 // replacing it.
 // ============================================================
 function initParallaxBlobs() {
+  if (prefersReducedMotion) return;
   var els = document.querySelectorAll('.parallax-blob');
   if (!els.length) return;
   var items = Array.prototype.map.call(els, function (el) {

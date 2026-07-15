@@ -202,6 +202,7 @@ function initParticles(container, opts) {
 document.addEventListener('DOMContentLoaded', function () {
   var container = document.getElementById('particles-canvas');
   if (!container) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   initParticles(container, {
     particleColors: ['#6C2BD9', '#8B5CF6', '#a78bfa'],
     particleCount: 500,
