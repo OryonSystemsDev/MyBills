@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-15T00:00:00.000Z",
+  "title": "Design System: MyBills",
+  "extensions": {
+    "colorMeta": {
+      "signal-purple": { "role": "primary", "displayName": "Signal Purple", "canonical": "#8B5CF6", "tonalRamp": ["#1E1230", "#2E1A52", "#42267A", "#5A32A8", "#6C2BD9", "#8B5CF6", "#A78BFA", "#D6C8FA"] },
+      "bg": { "role": "neutral", "displayName": "Near-Black Stage", "canonical": "#1a1a1a", "tonalRamp": ["#0a0a0a", "#141414", "#1a1a1a", "#242424", "#333333", "#4d4d4d", "#7a7a7a", "#c2c2c2"] },
+      "ink": { "role": "neutral", "displayName": "Paper Ink", "canonical": "#F1F5F9", "tonalRamp": ["#334155", "#475569", "#64748B", "#94A3B8", "#CBD5E1", "#E2E8F0", "#F1F5F9", "#FFFFFF"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Headline do hero, uma por página." },
+      "mono": { "displayName": "Mono", "purpose": "Qualquer valor monetário, percentual ou timestamp." }
+    },
+    "shadows": [
+      { "name": "float-sm", "value": "0 20px 40px rgba(0,0,0,0.4)", "purpose": "Chips e badges flutuantes no hero." },
+      { "name": "float-lg", "value": "0 40px 100px rgba(0,0,0,0.5)", "purpose": "Painel de produto principal." },
+      { "name": "glow-purple", "value": "0 12px 34px rgba(108,43,217,0.42)", "purpose": "CTA primário." },
+      { "name": "glow-purple-sm", "value": "0 6px 20px rgba(139,92,246,0.35)", "purpose": "CTA secundário / nav." }
+    ],
+    "motion": [
+      { "name": "floaty", "value": "translateY(-10px) over 5s ease-in-out infinite", "purpose": "Badges flutuantes no hero." }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "CTA principal com gradiente roxo e glow.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#planos\">Ver planos →</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 9px; padding: 15px 30px; background: linear-gradient(135deg, #6C2BD9, #8B5CF6); color: #fff; border-radius: 13px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 600; box-shadow: 0 12px 34px rgba(108,43,217,0.42); transition: transform 0.2s, box-shadow 0.2s; } .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(108,43,217,0.5); } .ds-btn-primary:focus-visible { outline: 2px solid #A78BFA; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "CTA secundário, superfície neutra com borda.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#app\">Ver demonstração</a>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 9px; padding: 15px 30px; background: #242424; border: 1px solid #2a2a2a; color: #F1F5F9; border-radius: 13px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 16px; font-weight: 600; transition: background 0.2s, transform 0.2s; } .ds-btn-secondary:hover { background: #2a2a2a; transform: translateY(-2px); } .ds-btn-secondary:focus-visible { outline: 2px solid #A78BFA; outline-offset: 2px; }"
+    },
+    {
+      "name": "Stat Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Card de painel com valor monetário em mono.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-label\">Receitas</div><div class=\"ds-card-value\">R$ 4.230</div></div>",
+      "css": ".ds-card { background: #242424; border: 1px solid #2a2a2a; border-radius: 18px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); } .ds-card-label { font-size: 12px; color: #64748B; font-weight: 500; margin-bottom: 10px; font-family: 'Bricolage Grotesque', sans-serif; } .ds-card-value { font-family: 'JetBrains Mono', monospace; font-size: 23px; font-weight: 600; color: #22C55E; }"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Pílula de status com ponto indicador.",
+      "html": "<span class=\"ds-chip\"><span class=\"ds-chip-dot\"></span>Sem cartão de crédito</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; background: #242424; border: 1px solid #2a2a2a; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #94A3B8; font-weight: 500; } .ds-chip-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 10px #22C55E; }"
+    },
+    {
+      "name": "Nav Bar",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Barra de navegação fixa com blur.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-logo\">MyBills</span><a class=\"ds-nav-link\" href=\"#\">Recursos</a><a class=\"ds-nav-cta\" href=\"#planos\">Começar</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(20,17,15,0.72); backdrop-filter: blur(18px); border-bottom: 1px solid #2a2a2a; } .ds-nav-logo { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.01em; color: #F1F5F9; } .ds-nav-link { color: #94A3B8; font-size: 14px; font-weight: 500; text-decoration: none; } .ds-nav-cta { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; background: #8B5CF6; color: #fff; border-radius: 10px; font-size: 14px; font-weight: 700; box-shadow: 0 6px 20px rgba(139,92,246,0.35); text-decoration: none; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Open Ledger",
+    "overview": "MyBills se comporta como um livro-caixa aberto sobre uma mesa escura à noite: nada trancado, nada escondido atrás de uma página seguinte. O fundo quase-preto não é frieza de banco corporativo, é a mesa em que só o que importa recebe luz. Essa luz é sempre o mesmo sinal, um roxo elétrico único, nunca disperso em múltiplas cores concorrendo por atenção. A tipografia reforça a honestidade: Bricolage Grotesque para tudo que é linguagem humana, JetBrains Mono só para números.",
+    "keyCharacteristics": [
+      "Fundo quase-preto como mesa escura, não tema dark genérico",
+      "Um único sinal de cor (roxo) para tudo que é ação ou destaque",
+      "Números sempre em mono, texto sempre em Bricolage Grotesque",
+      "Cards flutuam com sombra grande e difusa, nunca borda lateral colorida",
+      "Cantos generosamente arredondados, nunca angulosos"
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Roxo é a única cor com permissão de significar ação ou importância; verde/vermelho/âmbar existem só para status financeiro.", "section": "colors" },
+      { "name": "The Number-Is-Mono Rule", "body": "Qualquer número monetário, percentual ou de tempo é sempre JetBrains Mono, nunca a fonte de display.", "section": "typography" },
+      { "name": "The Colored Glow Rule", "body": "Só elementos acionáveis roxos ganham sombra colorida; todo o resto usa sombra preta neutra.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do usar roxo como o único sinal de ação em qualquer tela",
+      "Do manter números sempre em JetBrains Mono, texto sempre em Bricolage Grotesque",
+      "Do usar sombra preta grande e difusa para elevar cards, glow roxo só em elementos acionáveis",
+      "Do manter todo recurso do produto visível e representado igualmente na página"
+    ],
+    "donts": [
+      "Don't usar border-left/border-right colorido como faixa de destaque",
+      "Don't aproximar a paleta de azul/verde institucional de banco tradicional",
+      "Don't cair no clichê de SaaS de IA genérico",
+      "Don't introduzir uma segunda cor de acento saturada",
+      "Don't usar background-clip: text com gradiente para texto decorativo"
+    ]
+  }
+}
